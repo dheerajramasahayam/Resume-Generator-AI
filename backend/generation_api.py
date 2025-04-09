@@ -56,12 +56,16 @@ def generate_resume():
     if pi.get('target_job'): prompt_parts.append(f"- Target Role/Summary Hint: {pi['target_job']}")
 
     if profile_data.get('experiences'):
-        prompt_parts.append("\n**Work Experience:**")
-        for exp in profile_data['experiences']:
-            prompt_parts.append(f"- **{exp['job_title']}** at {exp['company_name']} ({exp.get('location', 'N/A')})")
-            prompt_parts.append(f"  {exp.get('start_date', '')} - {exp.get('end_date', '')}")
-            if exp.get('description'): prompt_parts.append(f"  Responsibilities/Achievements:\n    - {exp['description'].replace('\n', '\n    - ')}")
+            prompt_parts.append("\n**Work Experience:**")
+            for exp in profile_data['experiences']:
+                prompt_parts.append(f"- **{exp['job_title']}** at {exp['company_name']} ({exp.get('location', 'N/A')})")
+                prompt_parts.append(f"  {exp.get('start_date', '')} - {exp.get('end_date', '')}")
+                if exp.get('description'):
+                    # Perform replacement outside the f-string expression
+                    formatted_desc = exp['description'].replace('\n', '\n    - ')
+                    prompt_parts.append(f"  Responsibilities/Achievements:\n    - {formatted_desc}")
 
+    # Correct indentation for the following blocks
     if profile_data.get('educations'):
         prompt_parts.append("\n**Education:**")
         for edu in profile_data['educations']:

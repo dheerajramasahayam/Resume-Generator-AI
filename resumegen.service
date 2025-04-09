@@ -18,9 +18,9 @@ Environment="FLASK_APP=backend.app:create_app"
 # Environment="GEMINI_API_KEY=YOUR_GOOGLE_GEMINI_API_KEY" # Example if not using .env
 
 # IMPORTANT: Replace with the *absolute* path to gunicorn (often inside venv/bin if using venv)
-# The command runs Gunicorn, binding it to localhost port 5000, using 3 worker processes.
+# The command runs Gunicorn, binding it to all interfaces (0.0.0.0) on port 5000, using 3 worker processes.
 # It points to the Flask application factory 'create_app' within the 'backend.app' module.
-ExecStart=/path/to/your/gunicorn backend.app:create_app -w 3 --bind 127.0.0.1:5000
+ExecStart=/path/to/your/gunicorn backend.app:create_app -w 3 --bind 0.0.0.0:5000
 
 Restart=always
 
