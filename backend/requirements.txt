@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+python-dotenv
+google-generativeai
+Werkzeug
+Flask-Migrate
+python-docx
+fpdf2
+nltk

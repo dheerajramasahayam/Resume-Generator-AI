@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Cover Letter - Resume Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Reverted to 'static' -->
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <span class="nav-brand">ResumeGen</span>
+            <ul class="nav-links">
+                <li><a href="/profile">My Profile</a></li>
+                <li><a href="/generate_page">Generate Resume</a></li>
+                <li><a href="/cover_letter" class="active">Generate Cover Letter</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container cover-letter-container">
+        <h1>Generate Cover Letter</h1>
+        <p>Provide details about the job and company to generate a tailored cover letter using your profile.</p>
+
+        <form id="cover-letter-form">
+            <div class="form-group">
+                <label for="company_name">Company Name</label>
+                <input type="text" id="company_name" name="company_name" required>
+            </div>
+            <div class="form-group">
+                <label for="hiring_manager">Hiring Manager Name (Optional)</label>
+                <input type="text" id="hiring_manager" name="hiring_manager" placeholder="e.g., Ms. Jane Doe">
+            </div>
+             <div class="form-group">
+                <label for="job_description_cl">Job Description</label>
+                <textarea id="job_description_cl" name="job_description_cl" rows="8" required placeholder="Paste the job description here..."></textarea>
+            </div>
+             <div class="form-group">
+                <label for="additional_notes">Additional Notes (Optional)</label>
+                <textarea id="additional_notes" name="additional_notes" rows="3" placeholder="e.g., Mention specific connection, emphasize a key skill..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" id="generate-cl-btn" class="btn">Generate Cover Letter</button>
+                <div id="generate-cl-status" class="status-message"></div>
+                 <div id="loading-cl-indicator" style="display: none;">Generating... Please wait.</div>
+            </div>
+        </form>
+
+        <hr style="margin: 30px 0;">
+
+        <h2>Generated Cover Letter</h2>
+        <div id="cover-letter-output" class="resume-content" style="min-height: 300px;">
+            <!-- Cover letter text will be loaded here -->
+            Awaiting generation...
+        </div>
+         <div class="form-actions">
+              <button id="copy-cl-btn" class="btn btn-secondary" disabled>Copy Text</button>
+              <!-- Add export buttons later if desired -->
+         </div>
+         <div id="copy-cl-status" class="status-message"></div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='cover_letter.js') }}"></script> <!-- Reverted to 'static' -->
+</body>
+</html>

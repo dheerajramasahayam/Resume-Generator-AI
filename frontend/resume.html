@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generated Resume - Resume Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Reverted to 'static' -->
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <span class="nav-brand">ResumeGen</span>
+            <ul class="nav-links">
+                <li><a href="/profile">My Profile</a></li>
+                <li><a href="/generate_page">Generate Resume</a></li>
+                <li><a href="/cover_letter">Generate Cover Letter</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container resume-display-container">
+        <h1>Generated Resume</h1>
+        <p>Here is the resume generated based on your profile and the provided job description.</p>
+        <div id="resume-output" class="resume-content">
+            <!-- Resume text will be loaded here by JS -->
+            Loading...
+        </div>
+        <!-- Template Selection -->
+        <div class="template-selection" style="margin-top: 20px; text-align: center;">
+            <label style="margin-right: 15px; font-weight: bold;">Choose Export Template:</label>
+            <input type="radio" id="template-simple" name="export_template" value="simple" checked>
+            <label for="template-simple" style="margin-right: 10px;">Simple</label>
+            <input type="radio" id="template-classic" name="export_template" value="classic">
+            <label for="template-classic" style="margin-right: 10px;">Classic</label>
+            <input type="radio" id="template-modern" name="export_template" value="modern">
+            <label for="template-modern">Modern</label>
+        </div>
+
+         <div class="form-actions">
+              <button id="copy-btn" class="btn btn-secondary">Copy Text</button>
+              <button id="export-docx-btn" class="btn btn-secondary">Export as DOCX</button>
+              <button id="export-pdf-btn" class="btn btn-secondary">Export as PDF</button>
+         </div>
+         <div id="copy-status" class="status-message"></div>
+         <div id="export-status" class="status-message"></div> <!-- Added for export status -->
+    </div>
+
+    <script src="{{ url_for('static', filename='resume.js') }}"></script> <!-- Reverted to 'static' -->
+</body>
+</html>

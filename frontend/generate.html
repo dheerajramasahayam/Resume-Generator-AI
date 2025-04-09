@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Resume - Resume Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Reverted to 'static' -->
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <span class="nav-brand">ResumeGen</span>
+            <ul class="nav-links">
+                <li><a href="/profile">My Profile</a></li>
+                <li><a href="/generate_page" class="active">Generate Resume</a></li>
+                <li><a href="/cover_letter">Generate Cover Letter</a></li>
+                <li><a href="/auth/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container generate-container">
+        <h1>Generate Resume</h1>
+        <p>Paste the job description below to generate a tailored resume based on your saved profile.</p>
+
+        <div id="profile-check-message" class="warning" style="display: none;">
+            Your profile seems empty. Please <a href="/profile">fill out your profile</a> before generating a resume.
+        </div>
+
+        <form id="generate-form">
+            <div class="form-group">
+                <label for="job_description">Job Description</label>
+                <textarea id="job_description" name="job_description" rows="10" required placeholder="Paste the full job description here..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" id="generate-btn" class="btn" disabled>Generate Resume</button>
+                <div id="generate-status" class="status-message"></div>
+                 <div id="loading-indicator" style="display: none;">Generating... Please wait.</div>
+            </div>
+        </form>
+
+        <!-- Keyword Analysis Section -->
+        <div class="keyword-analysis-section" style="margin-top: 30px;">
+            <hr>
+            <h2>Job Description Keywords</h2>
+            <p>Analyze the job description to find key terms and compare them with your profile.</p>
+            <button type="button" id="analyze-keywords-btn" class="btn btn-secondary">Analyze Keywords</button>
+            <div id="keyword-loading" style="display: none; margin-top: 10px;">Analyzing...</div>
+            <div id="keywords-output" style="margin-top: 15px;">
+                <!-- Keywords will be displayed here -->
+            </div>
+             <div id="keyword-match-info" style="margin-top: 15px; font-style: italic;"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='generate.js') }}"></script> <!-- Reverted to 'static' -->
+</body>
+</html>
