@@ -1,0 +1,28 @@
+[Unit]
+Description=Gunicorn instance to serve Resume Generator AI
+After=network.target
+
+[Service]
+# IMPORTANT: Replace 'your_server_user' with the actual user that should run the app
+User=your_server_user
+# IMPORTANT: Replace 'your_server_group' with the actual group for the user (often same as user)
+Group=your_server_group
+# IMPORTANT: Replace with the *absolute* path to your project directory on the server
+WorkingDirectory=/path/to/your/Resume-Generator-AI
+# IMPORTANT: Set environment variables needed by the app
+# Ensure the .env file is in the WorkingDirectory or provide absolute path
+Environment="PATH=/path/to/your/python/env/bin" # Add path to python/gunicorn if using venv
+Environment="FLASK_APP=backend.app:create_app"
+# Load other variables from .env file if needed, or set them here explicitly
+# Environment="SECRET_KEY=your_strong_random_secret_key" # Example if not using .env
+# Environment="GEMINI_API_KEY=YOUR_GOOGLE_GEMINI_API_KEY" # Example if not using .env
+
+# IMPORTANT: Replace with the *absolute* path to gunicorn (often inside venv/bin if using venv)
+# The command runs Gunicorn, binding it to localhost port 5000, using 3 worker processes.
+# It points to the Flask application factory 'create_app' within the 'backend.app' module.
+ExecStart=/path/to/your/gunicorn backend.app:create_app -w 3 --bind 127.0.0.1:5000
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
