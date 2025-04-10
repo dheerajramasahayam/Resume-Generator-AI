@@ -4,91 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to ResumeGen AI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Use url_for -->
-    <style>
-        /* Specific styles for landing page */
-        .landing-container {
-            text-align: center;
-            padding-top: 50px;
-            padding-bottom: 50px;
-        }
-        .landing-container h1 {
-            font-size: 2.5em;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        .landing-container p.lead {
-            font-size: 1.2em;
-            color: #555;
-            margin-bottom: 30px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .landing-actions .btn {
-            margin: 0 10px;
-            padding: 12px 25px;
-            font-size: 1.1em;
-        }
-        .features {
-            margin-top: 50px;
-            text-align: left;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .features h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #444;
-        }
-        .features ul {
-            list-style: none; /* Remove default bullets */
-            padding-left: 0;
-        }
-        .features li {
-            background-color: #f9f9f9;
-            border: 1px solid #eee;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-        }
-        .features li strong {
-            color: #5cb85c;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Removed inline style block -->
 </head>
 <body>
-    <!-- Simple Header for Landing Page (No full navbar) -->
-    <header style="background-color: #333; color: #fff; padding: 15px 0; text-align: center;">
-        <span style="font-size: 1.8em; font-weight: bold;">ResumeGen AI</span>
+    <!-- Use classes for styling -->
+    <header class="landing-header">
+        <span class="landing-brand">ResumeGen AI</span>
     </header>
 
+    <!-- Add specific landing-page class for targeting -->
     <div class="container landing-container">
-        <h1>Build Your Perfect Resume with AI</h1>
-        <p class="lead">
+        <h1 class="landing-title">Build Your Perfect Resume with AI</h1>
+        <p class="landing-lead">
             Leverage the power of Google Gemini to create professional resumes tailored specifically
             to the job descriptions you're targeting. Save your profile, generate multiple versions,
             and land your dream job faster!
         </p>
         <div class="landing-actions">
-            <a href="/auth/login" class="btn btn-secondary">Login</a>
-            <a href="/auth/register" class="btn">Sign Up Now</a>
+            <a href="/auth/login" class="btn btn-secondary btn-lg">Login</a> <!-- Added btn-lg -->
+            <a href="/auth/register" class="btn btn-lg">Sign Up Now</a> <!-- Added btn-lg -->
         </div>
 
-        <div class="features">
-            <h2>Key Features</h2>
-            <ul>
-                <li><strong>AI-Powered Generation:</strong> Uses Google Gemini to craft compelling resume content.</li>
+        <div class="landing-features">
+            <h2 class="features-title">Key Features</h2>
+            <ul class="features-list">
+                <li class="feature-item"><strong>AI-Powered Generation:</strong> Uses Google Gemini to craft compelling resume content.</li>
                 <li><strong>Job Description Tailoring:</strong> Generates resumes specifically optimized for target job postings.</li>
                 <li><strong>Profile Management:</strong> Securely save and update your work experience, education, skills, and projects.</li>
                 <li><strong>Easy Interface:</strong> Simple forms to input your data and generate resumes quickly.</li>
-                <li><strong>Copy & Go:</strong> Easily copy the generated resume text to use anywhere.</li>
+                <li class="feature-item"><strong>Copy & Go:</strong> Easily copy the generated resume text to use anywhere.</li>
             </ul>
         </div>
     </div>
 
-    <footer style="text-align: center; margin-top: 40px; padding: 20px; color: #777;">
+    <footer class="landing-footer">
         &copy; 2025 ResumeGen AI
     </footer>
 </body>

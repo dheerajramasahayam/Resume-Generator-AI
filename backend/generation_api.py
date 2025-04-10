@@ -92,8 +92,10 @@ def generate_resume():
     prompt_parts.append("    - Use `**Job Title**` or `**Degree Name**` for titles within sections.")
     prompt_parts.append("    - Use `* Bullet point description` for list items under experience or projects.")
     prompt_parts.append("    - For skills, list them comma-separated or as simple list items after the `### Skills` header.")
-    prompt_parts.append("3.  Ensure standard resume sections (Summary/Objective, Experience, Education, Skills, Projects) are included if applicable based on the profile.")
-    prompt_parts.append("4.  Focus on highlighting experiences and skills relevant to the job description.")
+    prompt_parts.append("3.  **Crucially: Include ALL provided sections from the 'CANDIDATE PROFILE' above (Personal Information, Experience, Education, Skills, Projects) in the output resume.** Do not omit any sections provided in the profile.")
+    prompt_parts.append("4.  Ensure standard resume sections (Summary/Objective, Experience, Education, Skills, Projects) are included if applicable based on the profile.")
+    prompt_parts.append("5.  Focus on highlighting experiences and skills relevant to the job description.")
+
 
     full_prompt = "\n".join(prompt_parts)
 
@@ -204,9 +206,13 @@ def generate_cover_letter():
         skills_str = ", ".join([skill['skill_name'] for skill in profile_data['skills']])
         prompt_parts.append(f"Key Skills: {skills_str}")
     if profile_data.get('experiences'):
-         exp_titles = ", ".join(list(set([exp['job_title'] for exp in profile_data['experiences']]))) # Unique job titles
+         exp_titles = ", ".join(list(set([exp['job_title'] for exp in profile_data['experiences']])))
          prompt_parts.append(f"Relevant Experience Areas: {exp_titles}")
-    # Add more profile details as needed for better context
+    # Add more profile details as needed for better context, e.g., education summary
+    if profile_data.get('educations'):
+        degrees = ", ".join(list(set([edu['degree_name'] for edu in profile_data['educations']])))
+        prompt_parts.append(f"Education Background: {degrees}")
+
 
     prompt_parts.append("\n--- INSTRUCTIONS ---")
     prompt_parts.append("Generate only the cover letter text, starting with the salutation (e.g., 'Dear ...'). Do not include any introductory or concluding remarks outside the letter itself.")

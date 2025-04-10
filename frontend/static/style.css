@@ -238,6 +238,82 @@ h1 {
     margin-top: 15px;
 }
 
+/* Landing Page Specific Styles */
+.landing-header {
+    background-color: #007bff; /* Match primary button */
+    color: #ffffff;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+.landing-brand {
+    font-size: 1.8em;
+    font-weight: 600;
+}
+.landing-container {
+    text-align: center;
+    padding-top: 60px; /* More padding */
+    padding-bottom: 60px;
+    max-width: 800px; /* Slightly narrower */
+}
+.landing-title {
+    font-size: 2.8em; /* Larger title */
+    margin-bottom: 20px;
+    font-weight: 700; /* Bolder */
+}
+.landing-lead {
+    font-size: 1.25em;
+    color: #6c757d; /* Secondary text color */
+    margin-bottom: 40px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.landing-actions .btn {
+    margin: 0 15px; /* More spacing */
+    padding: 0.75rem 1.5rem; /* Larger buttons */
+    font-size: 1.1rem;
+}
+.landing-features {
+    margin-top: 60px;
+    text-align: left;
+}
+.features-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 1.8em;
+}
+.features-list {
+    list-style: none;
+    padding-left: 0;
+    display: grid; /* Use grid for layout */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Responsive columns */
+    gap: 20px; /* Space between items */
+}
+.feature-item {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.04);
+}
+.feature-item strong {
+    color: #007bff; /* Primary color for emphasis */
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+.landing-footer {
+    text-align: center;
+    margin-top: 50px;
+    padding: 25px;
+    color: #6c757d;
+    font-size: 0.9em;
+    border-top: 1px solid #e9ecef;
+}
+
 /* Flash Message / Alert Styling */
 .alert {
     padding: 15px;
