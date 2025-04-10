@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generated Resume - Resume Generator</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Reverted to 'static' -->
+    <link rel="stylesheet" href="{{ url_for('pages.static', filename='style.css') }}"> <!-- Use pages blueprint static -->
 </head>
 <body>
     <nav class="navbar">
@@ -46,6 +46,6 @@
          <div id="export-status" class="status-message"></div> <!-- Added for export status -->
     </div>
 
-    <script src="{{ url_for('static', filename='resume.js') }}"></script> <!-- Reverted to 'static' -->
+    <script src="{{ url_for('pages.static', filename='resume.js') }}"></script> <!-- Use pages blueprint static -->
 </body>
 </html>

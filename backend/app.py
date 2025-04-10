@@ -16,15 +16,11 @@ migrate = Migrate()
 
 def create_app(config_class=Config):
     """Application factory function."""
-    # Define path to the *static* folder within frontend
-    static_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend', 'static'))
-
-    # Configure the main app's static folder
+    # Configure the main app - remove explicit static folder config
+    # Blueprints will define their own static/template folders
     app = Flask(__name__,
                 instance_path=instance_path,
-                instance_relative_config=True,
-                static_folder=static_dir,      # Point to frontend/static
-                static_url_path='/static')     # Serve files under /static URL
+                instance_relative_config=True)
 
     app.config.from_object(config_class)
 
