@@ -112,4 +112,5 @@ def save_profile():
     except Exception as e:
         db.session.rollback()
         current_app.logger.error(f"Error saving profile for user {user.id}: {e}")
-        return jsonify({'error': 'Failed to save profile.'}), 500
+        # Standardized JSON error response
+        return jsonify({'error': f'An unexpected error occurred while saving the profile: {e}'}), 500

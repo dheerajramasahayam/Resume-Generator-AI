@@ -12,7 +12,8 @@ from functools import wraps
 from flask import Blueprint, render_template, abort, current_app, jsonify
 from flask_login import login_required, current_user
 # Import models needed for admin views
-from .models import User, db # Import db
+# Import specific models needed for view_user
+from .models import User, db, PersonalInfo, Experience, Education, Skill, Project
 
 # Define template folder relative to this blueprint file's location
 template_folder = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend', 'admin'))
@@ -50,7 +51,8 @@ def list_users():
         return render_template('admin_users.html', users=users, current_user=current_user)
     except Exception as e:
         current_app.logger.error(f"Error fetching users for admin: {e}")
-        return "Error fetching users.", 500
+        flash(f'An error occurred while fetching users: {e}', 'danger')
+        return redirect(url_for('admin.dashboard')) # Redirect to dashboard on error
 
 @admin_bp.route('/users/<int:user_id>')
 @login_required
@@ -85,7 +87,8 @@ def view_user(user_id):
 
     except Exception as e:
         current_app.logger.error(f"Error fetching user {user_id} for admin: {e}")
-        return "Error fetching user details.", 500
+        flash(f'An error occurred fetching user details: {e}', 'danger')
+        return redirect(url_for('admin.list_users')) # Redirect to list on error
 
 @admin_bp.route('/users/<int:user_id>/toggle-admin', methods=['POST'])
 @login_required

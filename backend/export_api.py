@@ -48,7 +48,7 @@ def export_resume():
             return response
         except Exception as e:
             current_app.logger.error(f"Error generating DOCX: {e}")
-            return jsonify({'error': 'Failed to generate DOCX file.'}), 500
+            return jsonify({'error': f'An unexpected error occurred generating the DOCX file: {e}'}), 500
 
     elif export_format == 'pdf':
         try:
@@ -70,7 +70,7 @@ def export_resume():
             return response
         except Exception as e:
             current_app.logger.error(f"Error generating PDF: {e}")
-            return jsonify({'error': 'Failed to generate PDF file.'}), 500
+            return jsonify({'error': f'An unexpected error occurred generating the PDF file: {e}'}), 500
 
     else:
         return jsonify({'error': 'Invalid export format specified.'}), 400

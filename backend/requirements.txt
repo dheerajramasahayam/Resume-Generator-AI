@@ -9,3 +9,4 @@ python-docx
 fpdf2
 nltk
 gunicorn # Production WSGI server
+pytest

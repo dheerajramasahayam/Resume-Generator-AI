@@ -113,7 +113,7 @@ def generate_resume():
         generated_text = response.text
     except Exception as e:
         current_app.logger.error(f"Gemini API error: {e}")
-        return jsonify({'error': f'Failed to generate resume via API: {e}'}), 500
+        return jsonify({'error': f'An error occurred during AI generation: {e}'}), 500
 
     # Increment counter on success
     try:
@@ -155,7 +155,8 @@ def extract_keywords():
 
     except Exception as e:
         current_app.logger.error(f"Error extracting keywords: {e}")
-        return jsonify({'keywords': [], 'warning': 'Could not extract keywords.'}), 200
+        # Return error status code here
+        return jsonify({'error': f'An unexpected error occurred during keyword extraction: {e}'}), 500
 
 
 @generation_api.route('/generate_cover_letter', methods=['POST'])
@@ -233,7 +234,7 @@ def generate_cover_letter():
         generated_text = response.text
     except Exception as e:
         current_app.logger.error(f"Gemini API error (Cover Letter): {e}")
-        return jsonify({'error': f'Failed to generate cover letter via API: {e}'}), 500
+        return jsonify({'error': f'An error occurred during AI generation: {e}'}), 500
 
     # Increment counter on success
     try:

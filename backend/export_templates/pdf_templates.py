@@ -31,16 +31,21 @@ def _add_content_to_pdf(pdf, cleaned_text, base_font, base_size, heading_size, l
         print(f"Encoding error: {e}. Using fallback.")
         encoded_text = cleaned_text.encode('utf-8', 'replace').decode('utf-8', 'replace')
 
+    available_width = pdf.w - pdf.l_margin - pdf.r_margin # Calculate available width
+
     for line in encoded_text.split('\n'):
         line_stripped = line.strip()
         if is_heading(line_stripped): # Use common heuristic
             pdf.set_font(base_font, 'B', size=heading_size)
-            pdf.cell(0, 8, txt=line_stripped, ln=1, align='L')
-            pdf.line(pdf.get_x(), pdf.get_y(), pdf.get_x() + pdf.w - pdf.l_margin - pdf.r_margin, pdf.get_y())
+            pdf.cell(available_width, 8, txt=line_stripped, ln=1, align='L') # Use calculated width
+            # Temporarily remove line for debugging
+            # if available_width > 0:
+            #     pdf.line(pdf.get_x(), pdf.get_y(), pdf.get_x() + available_width, pdf.get_y())
             pdf.ln(line_height * 0.6)
             pdf.set_font(base_font, size=base_size) # Reset font
         elif line_stripped:
-            pdf.multi_cell(0, line_height, txt=line_stripped)
+            display_text = f"• {line_stripped[2:]}" if line_stripped.startswith('* ') else line_stripped
+            pdf.multi_cell(available_width, line_height, txt=display_text) # Use calculated width
         else:
             pdf.ln(line_height * 0.5)
 
@@ -51,17 +56,20 @@ def _add_content_to_pdf_modern(pdf, cleaned_text, base_font, base_size, heading_
     except Exception:
         encoded_text = cleaned_text.encode('utf-8', 'replace').decode('utf-8', 'replace')
 
+    available_width = pdf.w - pdf.l_margin - pdf.r_margin # Calculate available width
+
     for line in encoded_text.split('\n'):
         line_stripped = line.strip()
         if is_heading(line_stripped): # Use common heuristic
             pdf.set_font(base_font, 'B', size=heading_size)
             # pdf.set_text_color(46, 134, 193) # Optional color
-            pdf.cell(0, 8, txt=line_stripped.upper(), ln=1, align='L') # UPPERCASE
+            pdf.cell(available_width, 8, txt=line_stripped.upper(), ln=1, align='L') # Use calculated width
             # pdf.set_text_color(0, 0, 0) # Reset color
             pdf.ln(line_height * 0.3) # Tight spacing
             pdf.set_font(base_font, size=base_size) # Reset font
         elif line_stripped:
-            pdf.multi_cell(0, line_height, txt=line_stripped)
+            display_text = f"- {line_stripped[2:]}" if line_stripped.startswith('* ') else line_stripped
+            pdf.multi_cell(available_width, line_height, txt=display_text) # Use calculated width
         else:
             pdf.ln(line_height * 0.4)
 
