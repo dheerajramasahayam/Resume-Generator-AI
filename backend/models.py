@@ -6,7 +6,10 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password_hash = db.Column(db.String(128))
-    is_admin = db.Column(db.Boolean, default=False, nullable=False) # Admin flag
+    is_admin = db.Column(db.Boolean, default=False, nullable=False)
+    # Generation counters
+    resume_generations = db.Column(db.Integer, default=0, nullable=False)
+    cover_letter_generations = db.Column(db.Integer, default=0, nullable=False)
 
     # Relationships
     personal_info = db.relationship('PersonalInfo', backref='user', uselist=False, cascade="all, delete-orphan")

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - ResumeGen AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .admin-container { padding-top: 20px; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Re-use main navbar structure -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <span class="nav-brand">ResumeGen (Admin)</span>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('pages.profile') }}">My Profile</a></li>
+                <li><a href="{{ url_for('pages.generate_page') }}">Generate Resume</a></li>
+                <li><a href="{{ url_for('pages.cover_letter') }}">Generate Cover Letter</a></li>
+                {% if current_user.is_admin %}
+                <li><a href="{{ url_for('admin.dashboard') }}">Admin Dashboard</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <h1>Manage Users</h1>
+        <p><a href="{{ url_for('admin.dashboard') }}">&laquo; Back to Admin Dashboard</a></p>
+
+        <!-- Display flashed messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category or 'info' }}" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Is Admin?</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if users %}
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>
+                            {{ 'Yes' if user.is_admin else 'No' }}
+                            <!-- Toggle Admin Form -->
+                            <form action="{{ url_for('admin.toggle_admin', user_id=user.id) }}" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-sm {{ 'btn-secondary' if user.is_admin else 'btn-success' }}"
+                                        {{ 'disabled' if user.id == current_user.id else '' }}>
+                                    {{ 'Remove Admin' if user.is_admin else 'Make Admin' }}
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <!-- View Detail Link -->
+                            <a href="{{ url_for('admin.view_user', user_id=user.id) }}" class="btn btn-sm btn-info">View Details</a>
+
+                            <!-- Delete User Form -->
+                            <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="POST" style="display: inline;"
+                                  onsubmit="return confirm('Are you sure you want to delete user {{ user.username }}? This cannot be undone.');">
+                                <button type="submit" class="btn btn-sm btn-danger"
+                                        {{ 'disabled' if user.id == current_user.id else '' }}>
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4">No users found.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- No specific JS needed for this simple view yet -->
+</body>
+</html>

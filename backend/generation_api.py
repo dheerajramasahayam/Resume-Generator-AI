@@ -84,9 +84,15 @@ def generate_resume():
             if proj.get('description'): prompt_parts.append(f"  {proj['description']}")
             if proj.get('link'): prompt_parts.append(f"  Link: {proj['link']}")
 
-    prompt_parts.append("\n--- INSTRUCTIONS ---")
-    prompt_parts.append("Please format the output as a standard resume, including sections like Summary/Objective (generate one if appropriate), Experience, Education, Skills, and Projects. Focus on highlighting experiences and skills relevant to the job description.")
-    prompt_parts.append("IMPORTANT: Only output the resume text itself, starting directly with the candidate's name or summary. Do not include any introductory phrases, explanations, or concluding remarks before or after the resume content.")
+    prompt_parts.append("\n--- OUTPUT FORMATTING INSTRUCTIONS ---")
+    prompt_parts.append("1.  Generate the resume content ONLY. Start directly with the candidate's name or summary. Do not include any introductory or concluding text outside the resume itself.")
+    prompt_parts.append("2.  Use Markdown-like formatting with specific markers:")
+    prompt_parts.append("    - Use `### Section Name` for main section headers (e.g., `### Experience`, `### Education`, `### Skills`).")
+    prompt_parts.append("    - Use `**Job Title**` or `**Degree Name**` for titles within sections.")
+    prompt_parts.append("    - Use `* Bullet point description` for list items under experience or projects.")
+    prompt_parts.append("    - For skills, list them comma-separated or as simple list items after the `### Skills` header.")
+    prompt_parts.append("3.  Ensure standard resume sections (Summary/Objective, Experience, Education, Skills, Projects) are included if applicable based on the profile.")
+    prompt_parts.append("4.  Focus on highlighting experiences and skills relevant to the job description.")
 
     full_prompt = "\n".join(prompt_parts)
 

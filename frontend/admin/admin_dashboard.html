@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ResumeGen AI</title>
+    <!-- Link to the main static CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Add some basic admin-specific styles if needed */
+        .admin-container {
+            padding-top: 20px;
+        }
+        .admin-nav ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        .admin-nav li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Re-use main navbar structure, adjust links/active state -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <span class="nav-brand">ResumeGen (Admin)</span>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('pages.profile') }}">My Profile</a></li>
+                <li><a href="{{ url_for('pages.generate_page') }}">Generate Resume</a></li>
+                <li><a href="{{ url_for('pages.cover_letter') }}">Generate Cover Letter</a></li>
+                {% if current_user.is_admin %}
+                <li><a href="{{ url_for('admin.dashboard') }}" class="active">Admin Dashboard</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container admin-container">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome, {{ current_user.username }}!</p>
+        <p>Total Registered Users: {{ user_count }}</p>
+
+        <nav class="admin-nav">
+            <h2>Management</h2>
+            <ul>
+                <li><a href="{{ url_for('admin.list_users') }}">View Users</a></li>
+                <!-- Add links to other admin features here later -->
+            </ul>
+        </nav>
+
+        <!-- Add dashboard widgets/stats here later -->
+
+    </div>
+
+    <!-- No specific JS needed for this simple dashboard yet -->
+</body>
+</html>
