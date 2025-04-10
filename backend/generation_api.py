@@ -8,8 +8,9 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
 from collections import Counter
 import string
-# Import get_profile function from profile_api
+# Import get_profile function from profile_api and db
 from .profile_api import get_profile
+from .app import db # Import db for saving counter
 
 generation_api = Blueprint('generation_api', __name__, url_prefix='/api')
 
@@ -110,6 +111,16 @@ def generate_resume():
     except Exception as e:
         current_app.logger.error(f"Gemini API error: {e}")
         return jsonify({'error': f'Failed to generate resume via API: {e}'}), 500
+
+    # Increment counter on success
+    try:
+        current_user.resume_generations = (current_user.resume_generations or 0) + 1
+        db.session.add(current_user)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Error incrementing resume counter for user {current_user.id}: {e}")
+        # Don't fail the request if counter fails, just log it
 
     return jsonify({'resume_text': generated_text}), 200
 
@@ -216,5 +227,15 @@ def generate_cover_letter():
     except Exception as e:
         current_app.logger.error(f"Gemini API error (Cover Letter): {e}")
         return jsonify({'error': f'Failed to generate cover letter via API: {e}'}), 500
+
+    # Increment counter on success
+    try:
+        current_user.cover_letter_generations = (current_user.cover_letter_generations or 0) + 1
+        db.session.add(current_user)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        current_app.logger.error(f"Error incrementing cover letter counter for user {current_user.id}: {e}")
+        # Don't fail the request if counter fails, just log it
 
     return jsonify({'cover_letter_text': generated_text}), 200

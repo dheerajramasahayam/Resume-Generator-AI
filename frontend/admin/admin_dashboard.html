@@ -41,7 +41,12 @@
     <div class="container admin-container">
         <h1>Admin Dashboard</h1>
         <p>Welcome, {{ current_user.username }}!</p>
-        <p>Total Registered Users: {{ user_count }}</p>
+
+        <div class="stats" style="margin-bottom: 20px;">
+            <p><strong>Total Registered Users:</strong> {{ user_count }}</p>
+            <p><strong>Total Resumes Generated:</strong> {{ total_resumes }}</p>
+            <p><strong>Total Cover Letters Generated:</strong> {{ total_cover_letters }}</p>
+        </div>
 
         <nav class="admin-nav">
             <h2>Management</h2>

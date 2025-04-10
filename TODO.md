@@ -20,7 +20,8 @@ This file outlines potential improvements and future enhancements for the applic
     *   [X] Update `view_user` route in `admin_routes.py` to render the detail template.
     *   [X] Add Toggle Admin / Delete User functionality.
     *   [X] Add user count to dashboard.
-    *   [ ] Add more useful info/stats to the admin dashboard (e.g., generation counts - requires DB changes). *(This part is not done)*
+    *   [X] Add generation counts to User model, increment in API, display in admin views.
+    *   [ ] Add more useful info/stats to the admin dashboard (e.g., date registered).
 *   **Testing:**
     *   [ ] Set up `pytest`.
     *   [ ] Write basic unit/integration tests for core API endpoints (auth, profile save/load, generation).

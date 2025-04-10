@@ -41,6 +41,8 @@
             <p><strong>User ID:</strong> {{ user.id }}</p>
             <p><strong>Username:</strong> {{ user.username }}</p>
             <p><strong>Is Admin:</strong> {{ 'Yes' if user.is_admin else 'No' }}</p>
+            <p><strong>Resumes Generated:</strong> {{ user.resume_generations or 0 }}</p>
+            <p><strong>Cover Letters Generated:</strong> {{ user.cover_letter_generations or 0 }}</p>
             <!-- Add Toggle/Delete buttons here if desired, similar to user list -->
         </div>
 
