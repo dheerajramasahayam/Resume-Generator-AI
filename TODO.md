@@ -29,8 +29,8 @@ This file outlines potential improvements and future enhancements for the applic
     *   [ ] Implement CSRF protection (e.g., using `Flask-WTF` or similar).
     *   [ ] Review all points of user input for potential security vulnerabilities (though SQLAlchemy helps prevent basic SQL injection).
 *   **UI/UX Polish:**
-    *   [ ] Add better loading indicators/feedback during API calls (e.g., spinners on buttons).
-    *   [ ] Improve visual consistency and styling (consider a lightweight CSS framework or refine existing CSS).
+    *   [X] Add better loading indicators/feedback during API calls (e.g., disable buttons, change text).
+    *   [X] Improve visual consistency and styling (Refined existing CSS: fonts, spacing, borders, colors, buttons).
     *   [ ] Make login/registration smoother (e.g., using JavaScript `fetch` to avoid full page reloads and show messages dynamically).
 
 ## Low Priority / Future Enhancements

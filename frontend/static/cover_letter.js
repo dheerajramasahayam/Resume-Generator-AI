@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const additionalNotesInput = document.getElementById('additional_notes');
     const generateBtn = document.getElementById('generate-cl-btn');
     const generateStatus = document.getElementById('generate-cl-status');
-    const loadingIndicator = document.getElementById('loading-cl-indicator');
+    // const loadingIndicator = document.getElementById('loading-cl-indicator'); // Remove this line
     const outputDiv = document.getElementById('cover-letter-output');
     const copyBtn = document.getElementById('copy-cl-btn');
     const copyStatus = document.getElementById('copy-cl-status');
@@ -19,8 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
         generateStatus.className = 'status-message';
         outputDiv.innerHTML = 'Generating...'; // Clear previous output
         copyBtn.disabled = true;
+        const originalButtonText = generateBtn.textContent; // Store original text
         generateBtn.disabled = true;
-        loadingIndicator.style.display = 'block';
+        generateBtn.textContent = 'Generating...'; // Change button text
         generatedCoverLetter = ''; // Reset stored text
 
         const payload = {
@@ -65,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             generateStatus.className = 'status-message error';
         } finally {
             generateBtn.disabled = false;
-            loadingIndicator.style.display = 'none';
+            generateBtn.textContent = originalButtonText; // Restore button text
              // Optionally clear the status message after a few seconds
             setTimeout(() => { generateStatus.textContent = ''; }, 5000);
         }

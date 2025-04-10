@@ -150,10 +150,13 @@ document.addEventListener('DOMContentLoaded', () => {
     addProjectBtn.addEventListener('click', () => addProjectEntry());
 
     // --- Save Profile Data ---
+    const saveProfileBtn = document.getElementById('save-profile'); // Get button
+
     profileForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         saveStatus.textContent = 'Saving...';
         saveStatus.className = 'status-message';
+        saveProfileBtn.disabled = true; // Disable button
 
         const formData = {
             personal_info: {
@@ -234,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
             saveStatus.textContent = `Error saving profile: ${error.message}`;
             saveStatus.className = 'status-message error';
         } finally {
+            saveProfileBtn.disabled = false; // Re-enable button
             // Optionally clear the status message after a few seconds
             setTimeout(() => { saveStatus.textContent = ''; }, 5000);
         }

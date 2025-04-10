@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-btn');
     const generateStatus = document.getElementById('generate-status');
     const profileCheckMessage = document.getElementById('profile-check-message');
-    const loadingIndicator = document.getElementById('loading-indicator');
+    // const loadingIndicator = document.getElementById('loading-indicator'); // Remove this line
     // Keyword elements
     const analyzeKeywordsBtn = document.getElementById('analyze-keywords-btn');
     const keywordLoading = document.getElementById('keyword-loading');
@@ -150,8 +150,9 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         generateStatus.textContent = ''; // Clear previous status
         generateStatus.className = 'status-message';
-        generateBtn.disabled = true; // Disable button during processing
-        loadingIndicator.style.display = 'block'; // Show loading indicator
+        const originalButtonText = generateBtn.textContent; // Store original text
+        generateBtn.disabled = true;
+        generateBtn.textContent = 'Generating...'; // Change button text
 
         const jobDescription = jobDescriptionInput.value;
 
@@ -159,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
             generateStatus.textContent = 'Job description cannot be empty.';
             generateStatus.className = 'status-message error';
             generateBtn.disabled = false;
-            loadingIndicator.style.display = 'none';
+            generateBtn.textContent = originalButtonText; // Restore button text
             return;
         }
 
@@ -191,8 +192,9 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error generating resume:', error);
             generateStatus.textContent = `Error generating resume: ${error.message}`;
             generateStatus.className = 'status-message error';
-            generateBtn.disabled = false; // Re-enable button on error
-            loadingIndicator.style.display = 'none'; // Hide loading indicator
+        } finally {
+            generateBtn.disabled = false; // Re-enable button
+            generateBtn.textContent = originalButtonText; // Restore button text
         }
     });
 
