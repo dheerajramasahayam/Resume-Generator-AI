@@ -3,16 +3,11 @@ from flask_login import login_required, current_user
 import os # Needed for template path
 
 # Using 'pages' as the blueprint name to avoid conflict if 'main' is used elsewhere
-# Define template and static folders relative to this blueprint file's location
+# Define template folder relative to this blueprint file's location
 frontend_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'frontend'))
 template_folder = frontend_dir
-static_folder = os.path.join(frontend_dir, 'static')
-# Register blueprint with template AND static folder configurations
-# Use a unique static URL path to avoid conflicts if other blueprints have static files
-pages = Blueprint('pages', __name__,
-                  template_folder=template_folder,
-                  static_folder=static_folder,
-                  static_url_path='/pages/static')
+# Register blueprint only with template folder (static is handled by app)
+pages = Blueprint('pages', __name__, template_folder=template_folder)
 
 
 @pages.route('/')

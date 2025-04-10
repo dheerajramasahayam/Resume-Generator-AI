@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - Resume Generator</title>
-    <link rel="stylesheet" href="{{ url_for('pages.static', filename='style.css') }}"> <!-- Use pages blueprint static -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Use app static -->
 </head>
 <body>
     <nav class="navbar">
@@ -189,6 +189,6 @@
         </div>
     </template>
 
-    <script src="{{ url_for('pages.static', filename='profile.js') }}"></script> <!-- Use pages blueprint static -->
+    <script src="{{ url_for('static', filename='profile.js') }}"></script> <!-- Use app static -->
 </body>
 </html>

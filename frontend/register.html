@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Resume Generator</title>
-    <link rel="stylesheet" href="{{ url_for('pages.static', filename='style.css') }}"> <!-- Use pages blueprint static -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Use app static -->
 </head>
 <body>
     <div class="container auth-container">
@@ -33,6 +33,6 @@
     </div>
 
     <!-- We might add auth.js later if we handle registration via fetch instead of form post -->
-    <!-- <script src="{{ url_for('pages.static', filename='auth.js') }}"></script> --> <!-- Use pages blueprint static -->
+    <!-- <script src="{{ url_for('static', filename='auth.js') }}"></script> --> <!-- Use app static -->
 </body>
 </html>
