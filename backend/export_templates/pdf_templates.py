@@ -23,32 +23,21 @@ def _setup_pdf(template_choice):
     return pdf, base_font, base_size, heading_size, line_height
 
 def _add_content_to_pdf(pdf, cleaned_text, base_font, base_size, heading_size, line_height):
-    """Adds cleaned text to the PDF, applying styles based on markdown markers."""
+    """Adds cleaned text to the PDF, applying heading styles using heuristic."""
+    # Encode text properly for FPDF
     try:
         encoded_text = cleaned_text.encode('latin-1', 'replace').decode('latin-1')
-    except Exception:
+    except Exception as e:
+        print(f"Encoding error: {e}. Using fallback.")
         encoded_text = cleaned_text.encode('utf-8', 'replace').decode('utf-8', 'replace')
 
     for line in encoded_text.split('\n'):
         line_stripped = line.strip()
-
-        if line_stripped.startswith('### '):
-            heading_text = line_stripped[4:].strip()
+        if is_heading(line_stripped): # Use common heuristic
             pdf.set_font(base_font, 'B', size=heading_size)
-            pdf.cell(0, 8, txt=heading_text.upper(), ln=1, align='L') # Uppercase heading
-            pdf.line(pdf.get_x(), pdf.get_y(), pdf.get_x() + pdf.w - pdf.l_margin - pdf.r_margin, pdf.get_y()) # Line below
+            pdf.cell(0, 8, txt=line_stripped, ln=1, align='L')
+            pdf.line(pdf.get_x(), pdf.get_y(), pdf.get_x() + pdf.w - pdf.l_margin - pdf.r_margin, pdf.get_y())
             pdf.ln(line_height * 0.6)
-            pdf.set_font(base_font, size=base_size) # Reset font
-        elif line_stripped.startswith('* '):
-            item_text = line_stripped[2:].strip()
-            pdf.set_x(pdf.l_margin + 5) # Indent bullet points
-            pdf.multi_cell(0, line_height, txt=f"• {item_text}") # Use bullet character
-            pdf.set_x(pdf.l_margin) # Reset indent
-        elif '**' in line_stripped: # Basic bold handling
-            pdf.set_font(base_font, 'B', size=base_size) # Set bold
-            # Replace markers and print (simple approach, doesn't handle multiple bolds per line well)
-            bold_text = line_stripped.replace('**', '')
-            pdf.multi_cell(0, line_height, txt=bold_text)
             pdf.set_font(base_font, size=base_size) # Reset font
         elif line_stripped:
             pdf.multi_cell(0, line_height, txt=line_stripped)
@@ -56,7 +45,7 @@ def _add_content_to_pdf(pdf, cleaned_text, base_font, base_size, heading_size, l
             pdf.ln(line_height * 0.5)
 
 def _add_content_to_pdf_modern(pdf, cleaned_text, base_font, base_size, heading_size, line_height):
-    """Adds cleaned text to the PDF, applying MODERN styles based on markdown markers."""
+    """Adds cleaned text to the PDF, applying MODERN heading styles using heuristic."""
     try:
         encoded_text = cleaned_text.encode('latin-1', 'replace').decode('latin-1')
     except Exception:
@@ -64,25 +53,13 @@ def _add_content_to_pdf_modern(pdf, cleaned_text, base_font, base_size, heading_
 
     for line in encoded_text.split('\n'):
         line_stripped = line.strip()
-
-        if line_stripped.startswith('### '):
-            heading_text = line_stripped[4:].strip()
+        if is_heading(line_stripped): # Use common heuristic
             pdf.set_font(base_font, 'B', size=heading_size)
             # pdf.set_text_color(46, 134, 193) # Optional color
-            pdf.cell(0, 8, txt=heading_text.upper(), ln=1, align='L')
+            pdf.cell(0, 8, txt=line_stripped.upper(), ln=1, align='L') # UPPERCASE
             # pdf.set_text_color(0, 0, 0) # Reset color
             pdf.ln(line_height * 0.3) # Tight spacing
-            pdf.set_font(base_font, size=base_size)
-        elif line_stripped.startswith('* '):
-            item_text = line_stripped[2:].strip()
-            pdf.set_x(pdf.l_margin + 4) # Slightly less indent for modern
-            pdf.multi_cell(0, line_height, txt=f"- {item_text}") # Use hyphen bullet
-            pdf.set_x(pdf.l_margin)
-        elif '**' in line_stripped:
-            pdf.set_font(base_font, 'B', size=base_size)
-            bold_text = line_stripped.replace('**', '')
-            pdf.multi_cell(0, line_height, txt=bold_text)
-            pdf.set_font(base_font, size=base_size)
+            pdf.set_font(base_font, size=base_size) # Reset font
         elif line_stripped:
             pdf.multi_cell(0, line_height, txt=line_stripped)
         else:

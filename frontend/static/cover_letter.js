@@ -43,9 +43,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (response.ok) {
-                generatedCoverLetter = result.cover_letter_text;
+                generatedCoverLetter = result.cover_letter_text; // Store original for copy
+
+                // Clean the text for display
+                let displayText = generatedCoverLetter;
+                displayText = displayText.replace(/^###\s+/gm, ''); // Remove ### heading marker
+                displayText = displayText.replace(/\*\*(.*?)\*\*/g, '$1'); // Remove ** bold marker
+                displayText = displayText.replace(/^\*\s+/gm, '• '); // Replace * list marker with a bullet
+
                 const pre = document.createElement('pre');
-                pre.textContent = generatedCoverLetter;
+                pre.textContent = displayText; // Display cleaned text
                 outputDiv.innerHTML = ''; // Clear loading message
                 outputDiv.appendChild(pre);
                 generateStatus.textContent = 'Cover letter generated successfully!';

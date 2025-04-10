@@ -13,9 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Display the resume text
             // Replace newlines with <br> for HTML display, but keep original for copy
             // resumeOutputDiv.innerHTML = resumeText.replace(/\n/g, '<br>');
+            // Clean the text for display (remove markdown markers)
+            let displayText = resumeText;
+            displayText = displayText.replace(/^###\s+/gm, ''); // Remove ### heading marker
+            displayText = displayText.replace(/\*\*(.*?)\*\*/g, '$1'); // Remove ** bold marker
+            displayText = displayText.replace(/^\*\s+/gm, '• '); // Replace * list marker with a bullet
+
             // Using <pre> tag might be better for formatting preservation
             const pre = document.createElement('pre');
-            pre.textContent = resumeText;
+            pre.textContent = displayText; // Display cleaned text
             resumeOutputDiv.innerHTML = ''; // Clear loading message
             resumeOutputDiv.appendChild(pre);
 

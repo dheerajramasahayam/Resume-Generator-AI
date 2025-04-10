@@ -92,9 +92,10 @@ def generate_resume():
     prompt_parts.append("    - Use `**Job Title**` or `**Degree Name**` for titles within sections.")
     prompt_parts.append("    - Use `* Bullet point description` for list items under experience or projects.")
     prompt_parts.append("    - For skills, list them comma-separated or as simple list items after the `### Skills` header.")
-    prompt_parts.append("3.  **Crucially: Include ALL provided sections from the 'CANDIDATE PROFILE' above (Personal Information, Experience, Education, Skills, Projects) in the output resume.** Do not omit any sections provided in the profile.")
-    prompt_parts.append("4.  Ensure standard resume sections (Summary/Objective, Experience, Education, Skills, Projects) are included if applicable based on the profile.")
-    prompt_parts.append("5.  Focus on highlighting experiences and skills relevant to the job description.")
+    prompt_parts.append("3.  **VERY IMPORTANT: You MUST include ALL sections and ALL details provided in the 'CANDIDATE PROFILE' section above in your generated resume output.** Do not omit any provided information (Personal Information, Experience, Education, Skills, Projects).")
+    prompt_parts.append("4.  Ensure standard resume sections (Summary/Objective, Experience, Education, Skills, Projects) are present and populated with the provided data.")
+    prompt_parts.append("5.  Focus on highlighting experiences and skills relevant to the job description, but still include all provided profile information.")
+    prompt_parts.append("6.  Double-check that all profile sections (Personal Info, Experience, Education, Skills, Projects) are present in the final output if they were provided in the input profile.")
 
 
     full_prompt = "\n".join(prompt_parts)

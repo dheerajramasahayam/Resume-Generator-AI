@@ -89,38 +89,19 @@ def generate_classic_docx(document, cleaned_text):
                  bullet_style = document.styles['Normal']
 
 
-    # Process lines based on markdown markers
+    # Revert to using is_heading heuristic
     for paragraph_text in cleaned_text.split('\n'):
         line_stripped = paragraph_text.strip()
-
-        if line_stripped.startswith('### '):
-            heading_text = line_stripped[4:].strip()
-            paragraph = document.add_paragraph(heading_text.upper(), style='ResumeHeadingClassic')
+        if is_heading(line_stripped): # Use common heuristic
+            paragraph = document.add_paragraph(line_stripped.upper(), style='ResumeHeadingClassic') # UPPERCASE HEADINGS
             paragraph_format = paragraph.paragraph_format
-            paragraph_format.space_before = Pt(12)
-            paragraph_format.space_after = Pt(6)
-            _add_paragraph_border(paragraph)
-        elif line_stripped.startswith('* '):
-            item_text = line_stripped[2:].strip()
-            # Applying 'List Bullet' style handles indentation/bullet
-            paragraph = document.add_paragraph(item_text, style='List Bullet')
-            paragraph_format = paragraph.paragraph_format
-            paragraph_format.space_after = Pt(2) # Tighter spacing for bullets
-        elif '**' in line_stripped: # Basic check for bold text (job titles etc.)
-             paragraph = document.add_paragraph()
-             parts = re.split(r'(\*\*.*?\*\*)', line_stripped) # Split by bold markers
-             for part in parts:
-                 if part.startswith('**') and part.endswith('**'):
-                     run = paragraph.add_run(part[2:-2])
-                     run.bold = True
-                 elif part: # Add non-bold parts
-                     paragraph.add_run(part)
-             paragraph_format = paragraph.paragraph_format
-             paragraph_format.space_after = Pt(6) # Standard spacing
+            paragraph_format.space_before = Pt(12) # More space before
+            paragraph_format.space_after = Pt(6)  # More space after
+            _add_paragraph_border(paragraph) # Add border below heading
         elif line_stripped: # Regular paragraph
             paragraph = document.add_paragraph(line_stripped)
             paragraph_format = paragraph.paragraph_format
-            paragraph_format.space_after = Pt(6)
+            paragraph_format.space_after = Pt(6) # Standard spacing
         elif len(document.paragraphs) > 0 and document.paragraphs[-1].text.strip():
              last_para_format = document.paragraphs[-1].paragraph_format
              if last_para_format.space_after is None or last_para_format.space_after < Pt(10):
@@ -150,16 +131,27 @@ def generate_modern_docx(document, cleaned_text):
         heading_font.size = Pt(12)
         heading_font.bold = True
         heading_font.color.rgb = RGBColor(0x2E, 0x86, 0xC1) # Add a blue color
+        # Define bullet style if needed
+        try:
+            bullet_style = document.styles['List Bullet']
+        except KeyError:
+             try:
+                 bullet_style = document.styles.add_style('List Bullet', WD_STYLE_TYPE.PARAGRAPH)
+                 bullet_style.base_style = document.styles['Normal']
+             except:
+                 bullet_style = document.styles['Normal']
 
+
+    # Revert to using is_heading heuristic
     for paragraph_text in cleaned_text.split('\n'):
         line_stripped = paragraph_text.strip()
-        if is_heading(line_stripped):
+        if is_heading(line_stripped): # Use common heuristic
             paragraph = document.add_paragraph(line_stripped.upper(), style='ResumeHeadingModern') # UPPERCASE MODERN HEADINGS
             paragraph_format = paragraph.paragraph_format
             paragraph_format.space_before = Pt(12) # More space before modern heading
             paragraph_format.space_after = Pt(3)  # Tight space after modern heading
             # No border for modern heading style
-        elif line_stripped:
+        elif line_stripped: # Regular paragraph
             paragraph = document.add_paragraph(line_stripped)
             paragraph_format = paragraph.paragraph_format
             paragraph_format.space_after = Pt(4) # Less spacing for modern body
