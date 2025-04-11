@@ -3,36 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Resume Generator</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Use app static -->
+    <title>Register - ResumeGen AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container auth-container">
-        <h1>Register</h1>
-        <!-- Flash messages will be handled by JS later if needed, or rely on redirects -->
-        <form id="register-form" method="POST" action="/auth/register">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <!-- Optional: Add password confirmation field if desired -->
-            <!--
-            <div class="form-group">
-                <label for="password_confirm">Confirm Password</label>
-                <input type="password" id="password_confirm" name="password_confirm" required>
-            </div>
-             -->
-            <button type="submit" class="btn">Register</button>
-        </form>
-        <p>Already have an account? <a href="/auth/login">Login here</a></p>
-        <div id="error-message" class="error"></div>
-    </div>
+    <header class="auth-header">
+        <div class="container">
+            <a href="/" class="nav-logo">ResumeGen AI</a>
+        </div>
+    </header>
 
-    <!-- We might add auth.js later if we handle registration via fetch instead of form post -->
-    <!-- <script src="{{ url_for('static', filename='auth.js') }}"></script> --> <!-- Use app static -->
+    <main class="auth-main">
+        <div class="auth-card">
+            <div class="auth-content">
+                <h1>Create Account</h1>
+                <p class="auth-subtitle">Join thousands of professionals crafting perfect resumes</p>
+
+                <div id="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <form id="register-form" method="POST" action="/auth/register" class="auth-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required
+                               class="form-input" placeholder="Choose a username">
+                        <span class="form-hint">Must be at least 3 characters long</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required
+                               class="form-input" placeholder="Create a strong password">
+                        <span class="form-hint">Minimum 8 characters, include numbers and symbols</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" required
+                               class="form-input" placeholder="Confirm your password">
+                    </div>
+
+                    <div class="form-group-inline terms">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <span>I agree to the <a href="#" class="link-text">Terms of Service</a> and <a href="#" class="link-text">Privacy Policy</a></span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                </form>
+
+                <p class="auth-footer">
+                    Already have an account? 
+                    <a href="/auth/login" class="link-primary">Sign in here</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .auth-header {
+            padding: var(--spacing-4) 0;
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-logo {
+            color: var(--primary-600);
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+        .auth-main {
+            min-height: calc(100vh - 80px);
+            padding: var(--spacing-8) var(--spacing-4);
+            background: var(--neutral-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .auth-content {
+            padding: var(--spacing-8);
+        }
+
+        .auth-content h1 {
+            color: var(--neutral-900);
+            font-size: 1.875rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .auth-subtitle {
+            color: var(--neutral-700);
+            text-align: center;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .auth-form {
+            margin-top: var(--spacing-6);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px var(--primary-100);
+            outline: none;
+        }
+
+        .form-hint {
+            display: block;
+            margin-top: var(--spacing-1);
+            font-size: 0.875rem;
+            color: var(--neutral-700);
+        }
+
+        .form-group-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .form-group-inline.terms {
+            margin-top: var(--spacing-4);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            color: var(--neutral-700);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid var(--neutral-300);
+        }
+
+        .link-text {
+            color: var(--primary-600);
+            text-decoration: none;
+        }
+
+        .link-text:hover {
+            text-decoration: underline;
+        }
+
+        .btn-block {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            font-size: 1rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: var(--spacing-6);
+            color: var(--neutral-700);
+        }
+
+        .link-primary {
+            color: var(--primary-600);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .link-primary:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            margin-bottom: var(--spacing-4);
+            padding: var(--spacing-3) var(--spacing-4);
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .auth-card {
+                box-shadow: none;
+            }
+            
+            .auth-content {
+                padding: var(--spacing-4);
+            }
+
+            .form-group-inline.terms {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--spacing-2);
+            }
+        }
+    </style>
 </body>
 </html>

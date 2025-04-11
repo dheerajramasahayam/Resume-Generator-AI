@@ -3,43 +3,483 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to ResumeGen AI</title>
+    <title>ResumeGen AI - Craft Your Perfect Resume</title>
+    <link rel="icon" href="data:," />
+    {{ js_vars|safe }}
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <!-- Removed inline style block -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Use classes for styling -->
-    <header class="landing-header">
-        <span class="landing-brand">ResumeGen AI</span>
-    </header>
-
-    <!-- Add specific landing-page class for targeting -->
-    <div class="container landing-container">
-        <h1 class="landing-title">Build Your Perfect Resume with AI</h1>
-        <p class="landing-lead">
-            Leverage the power of Google Gemini to create professional resumes tailored specifically
-            to the job descriptions you're targeting. Save your profile, generate multiple versions,
-            and land your dream job faster!
-        </p>
-        <div class="landing-actions">
-            <a href="/auth/login" class="btn btn-secondary btn-lg">Login</a> <!-- Added btn-lg -->
-            <a href="/auth/register" class="btn btn-lg">Sign Up Now</a> <!-- Added btn-lg -->
+    <section class="landing-hero">
+        <div class="container">
+            <nav class="nav">
+                <div class="nav-logo">ResumeGen AI</div>
+                <div class="nav-links">
+                    <a href="/auth/login" class="btn btn-outline">Log In</a>
+                    <a href="/auth/register" class="btn btn-primary">Get Started</a>
+                </div>
+            </nav>
+            
+            <div class="landing-container">
+                <h1 class="landing-title gradient-text">Create the Perfect Resume<br>with AI Precision</h1>
+                <p class="landing-lead">
+                    Leverage advanced AI technology to generate tailored resumes that match your dream job requirements. 
+                    Stand out from the crowd with professionally crafted content that highlights your unique strengths.
+                </p>
+                <div class="landing-actions">
+                    <a href="/auth/register" class="btn btn-primary">Start Building Free</a>
+                    <a href="#features" class="btn btn-outline">Learn More</a>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="landing-features">
-            <h2 class="features-title">Key Features</h2>
-            <ul class="features-list">
-                <li class="feature-item"><strong>AI-Powered Generation:</strong> Uses Google Gemini to craft compelling resume content.</li>
-                <li><strong>Job Description Tailoring:</strong> Generates resumes specifically optimized for target job postings.</li>
-                <li><strong>Profile Management:</strong> Securely save and update your work experience, education, skills, and projects.</li>
-                <li><strong>Easy Interface:</strong> Simple forms to input your data and generate resumes quickly.</li>
-                <li class="feature-item"><strong>Copy & Go:</strong> Easily copy the generated resume text to use anywhere.</li>
-            </ul>
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="features-title">Why Choose ResumeGen AI?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>AI-Powered Precision</h3>
+                    <p>Our intelligent AI analyzes job descriptions and optimizes your resume to maximize impact and relevance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Lightning Fast</h3>
+                    <p>Generate professional resumes in minutes, not hours. Save valuable time for your job search.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Professional Templates</h3>
+                    <p>Choose from multiple ATS-friendly templates designed to help you land more interviews.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Smart Analysis</h3>
+                    <p>Get instant feedback on how well your profile matches job requirements and skills.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Easy Updates</h3>
+                    <p>Maintain your profile and generate new versions for different positions effortlessly.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Cover Letters Too</h3>
+                    <p>Generate matching cover letters that complement your resume and complete your application.</p>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Trusted by Job Seekers</h2>
+                <p>Join thousands of professionals who've optimized their job search with ResumeGen AI</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number gradient-text">10K+</div>
+                    <div class="stat-label">Resumes Generated</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number gradient-text">85%</div>
+                    <div class="stat-label">Interview Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number gradient-text">4.8/5</div>
+                    <div class="stat-label">User Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your Job Search?</h2>
+            <p>Start crafting your perfect resume today - it's free to get started!</p>
+            <a href="/auth/register" class="btn btn-primary btn-lg">Create Your Resume Now</a>
+        </div>
+    </section>
 
     <footer class="landing-footer">
-        &copy; 2025 ResumeGen AI
+        <div class="container">
+            <p>&copy; 2025 ResumeGen AI. All rights reserved.</p>
+        </div>
     </footer>
+
+    <!-- Initialize dynamic color experience -->
+    <script type="module" src="{{ url_for('static', filename='initColors.js') }}"></script>
+    
+    <!-- Initialize scroll animations -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize intersection observer for animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                        // Stop observing after animation
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2,
+                rootMargin: '50px'
+            });
+
+            // Observe feature cards and stat cards
+            document.querySelectorAll('.feature-card, .stat-card').forEach((el, index) => {
+                observer.observe(el);
+                el.classList.add('will-animate');
+                el.style.transitionDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+
+    <style>
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--primary-500);
+            color: white;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: var(--primary-600);
+            transform: translateY(-2px);
+        }
+
+        /* Progress bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: var(--gradient-primary);
+            z-index: 9999;
+            transition: width 0.2s ease;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Scroll-triggered animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animation classes */
+        .will-animate {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
+        }
+
+        .feature-card.animate, .stat-card.animate {
+            animation: none;
+        }
+
+        .feature-card:nth-child(1) { animation-delay: 0.1s; }
+        .feature-card:nth-child(2) { animation-delay: 0.2s; }
+        .feature-card:nth-child(3) { animation-delay: 0.3s; }
+        .feature-card:nth-child(4) { animation-delay: 0.4s; }
+        .feature-card:nth-child(5) { animation-delay: 0.5s; }
+        .feature-card:nth-child(6) { animation-delay: 0.6s; }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Interactive hover effects */
+        .btn {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::after {
+            width: 300px;
+            height: 300px;
+            opacity: 0;
+        }
+
+        .feature-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+                       0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .feature-icon {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-logo {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-logo:hover::after {
+            width: 100%;
+        }
+
+        .stat-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card:hover .stat-number {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Landing hero animations */
+        .landing-hero {
+            background: linear-gradient(
+                180deg,
+                var(--primary-100) 0%,
+                var(--primary-200) 30%,
+                var(--primary-100) 70%,
+                var(--neutral-50) 100%
+            );
+            background-size: 400% 400%;
+            animation: gradient-flow 15s ease infinite;
+            padding: var(--spacing-12) 0;
+            margin-bottom: var(--spacing-12);
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradient-flow {
+            0% { background-position: 50% 0% }
+            50% { background-position: 50% 100% }
+            100% { background-position: 50% 0% }
+        }
+
+        .testimonials-section {
+            padding: var(--spacing-12) 0;
+            background: linear-gradient(180deg, white 0%, var(--neutral-50) 100%);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-12);
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .section-header p {
+            color: var(--neutral-700);
+            font-size: 1.125rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-6);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: var(--spacing-6);
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: var(--spacing-2);
+            background-size: 200% 200%;
+        }
+
+        /* Add gradient animation to stats */
+        .stat-number.gradient-text {
+            animation: gradient-shift 8s ease infinite alternate;
+            background: linear-gradient(
+                90deg,
+                var(--primary-500),
+                var(--tertiary-split1),
+                var(--primary-600)
+            );
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 200% auto;
+        }
+
+        .stat-label {
+            color: var(--neutral-700);
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        .cta-section {
+            background: linear-gradient(
+                135deg,
+                var(--primary-500) 0%,
+                var(--primary-600) 50%,
+                var(--primary-700) 100%
+            );
+            background-size: 200% 200%;
+            animation: gradient-shift 15s ease infinite;
+            color: white;
+            padding: var(--spacing-12) 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%
+            );
+            background-size: 200% 200%;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% 0;
+            }
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-4);
+            color: white;
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: var(--spacing-8);
+        }
+
+        .cta-section .btn-primary {
+            background: white;
+            color: var(--primary-600);
+            border-color: white;
+        }
+
+        .cta-section .btn-primary:hover {
+            background: var(--neutral-100);
+            border-color: var(--neutral-100);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-section h2 {
+                font-size: 2rem;
+            }
+
+            .cta-section p {
+                font-size: 1.125rem;
+            }
+        }
+    </style>
 </body>
 </html>

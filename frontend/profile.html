@@ -3,192 +3,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile - Resume Generator</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Use app static -->
+    <title>My Profile - ResumeGen AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container nav-container">
-            <span class="nav-brand">ResumeGen</span>
-            <ul class="nav-links">
-                <li><a href="/profile" class="active">My Profile</a></li>
-                <li><a href="/generate_page">Generate Resume</a></li>
-                <li><a href="/auth/logout">Logout</a></li>
-            </ul>
+    <header class="app-header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="nav-logo">ResumeGen AI</a>
+                <div class="nav-links">
+                    <a href="/profile" class="nav-link active">Profile</a>
+                    <a href="/generate" class="nav-link">Generate Resume</a>
+                    <a href="/cover_letter" class="nav-link">Cover Letter</a>
+                    <a href="/auth/logout" class="btn btn-outline btn-sm">Logout</a>
+                </div>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <div class="container profile-container">
-        <h1>My Profile</h1>
-        <p>Welcome, <span id="username-display">User</span>!</p> <!-- JS will update this -->
-        <p>Fill out or update your professional details below.</p>
-
-        <form id="profile-form">
-            <!-- Personal Information Section -->
-            <fieldset>
-                <legend>Personal Information</legend>
-                <div class="form-group">
-                    <label for="full_name">Full Name</label>
-                    <input type="text" id="full_name" name="full_name">
-                </div>
-                <div class="form-group">
-                    <label for="phone_number">Phone Number</label>
-                    <input type="tel" id="phone_number" name="phone_number">
-                </div>
-                <div class="form-group">
-                    <label for="email_address">Email Address</label>
-                    <input type="email" id="email_address" name="email_address">
-                </div>
-                <div class="form-group">
-                    <label for="linkedin_url">LinkedIn Profile URL</label>
-                    <input type="url" id="linkedin_url" name="linkedin_url">
-                </div>
-                <div class="form-group">
-                    <label for="portfolio_url">Portfolio/Website URL</label>
-                    <input type="url" id="portfolio_url" name="portfolio_url">
-                </div>
-                <div class="form-group">
-                    <label for="location">Location (City, State)</label>
-                    <input type="text" id="location" name="location">
-                </div>
-                 <div class="form-group">
-                    <label for="target_job">Target Job Title / Role Summary Hint</label>
-                    <input type="text" id="target_job" name="target_job" placeholder="e.g., Senior Software Engineer, Marketing Manager">
-                </div>
-            </fieldset>
-
-            <!-- Work Experience Section -->
-            <fieldset id="experience-section">
-                <legend>Work Experience</legend>
-                <div id="experience-entries">
-                    <!-- Experience entries will be added here by JS -->
-                </div>
-                <button type="button" id="add-experience" class="btn btn-secondary">Add Experience</button>
-            </fieldset>
-
-            <!-- Education Section -->
-            <fieldset id="education-section">
-                <legend>Education</legend>
-                <div id="education-entries">
-                    <!-- Education entries will be added here by JS -->
-                </div>
-                <button type="button" id="add-education" class="btn btn-secondary">Add Education</button>
-            </fieldset>
-
-            <!-- Skills Section -->
-            <fieldset id="skills-section">
-                <legend>Skills</legend>
-                 <div class="form-group">
-                    <label for="skills-input">Skills (comma-separated or add one by one)</label>
-                    <input type="text" id="new-skill-input" placeholder="Enter a skill">
-                    <button type="button" id="add-skill-btn" class="btn btn-sm btn-secondary">Add Skill</button>
-                 </div>
-                <ul id="skills-list">
-                    <!-- Skills will be listed here -->
-                </ul>
-            </fieldset>
-
-            <!-- Projects Section -->
-            <fieldset id="projects-section">
-                <legend>Projects</legend>
-                <div id="project-entries">
-                    <!-- Project entries will be added here by JS -->
-                </div>
-                <button type="button" id="add-project" class="btn btn-secondary">Add Project</button>
-            </fieldset>
-
-            <div class="form-actions">
-                <button type="submit" id="save-profile" class="btn">Save Profile</button>
-                <div id="save-status" class="status-message"></div>
+    <main class="app-main">
+        <div class="container">
+            <div class="page-header">
+                <h1>My Profile</h1>
+                <p class="page-subtitle">Keep your information up to date for the best resume generation results</p>
             </div>
-        </form>
-    </div>
 
-    <!-- Templates for dynamic entries -->
-    <template id="experience-template">
-        <div class="experience-entry dynamic-entry">
-            <div class="form-group">
-                <label>Job Title</label>
-                <input type="text" name="exp_job_title" required>
+            <div class="profile-completion">
+                <div class="completion-bar">
+                    <div class="completion-progress" style="width: 0%"></div>
+                </div>
+                <p class="completion-text">Profile completion: <span id="completion-percentage">0</span>%</p>
             </div>
-            <div class="form-group">
-                <label>Company Name</label>
-                <input type="text" name="exp_company_name">
+
+            <div class="profile-grid">
+                <!-- Personal Information -->
+                <section class="profile-section">
+                    <div class="section-header">
+                        <h2>Personal Information</h2>
+                        <p class="section-subtitle">Your basic contact information</p>
+                    </div>
+                    <div class="card">
+                        <form id="personal-info-form" class="form-grid">
+                            <div class="form-group">
+                                <label for="full_name">Full Name</label>
+                                <input type="text" id="full_name" name="full_name" class="form-input"
+                                       placeholder="Your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="email_address">Email</label>
+                                <input type="email" id="email_address" name="email_address" class="form-input"
+                                       placeholder="Your email address">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone_number">Phone</label>
+                                <input type="tel" id="phone_number" name="phone_number" class="form-input"
+                                       placeholder="Your phone number">
+                            </div>
+                            <div class="form-group">
+                                <label for="location">Location</label>
+                                <input type="text" id="location" name="location" class="form-input"
+                                       placeholder="City, State">
+                            </div>
+                            <div class="form-group span-2">
+                                <label for="linkedin_url">LinkedIn Profile</label>
+                                <input type="url" id="linkedin_url" name="linkedin_url" class="form-input"
+                                       placeholder="https://linkedin.com/in/your-profile">
+                            </div>
+                            <div class="form-group span-2">
+                                <label for="portfolio_url">Portfolio Website</label>
+                                <input type="url" id="portfolio_url" name="portfolio_url" class="form-input"
+                                       placeholder="https://your-portfolio.com">
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Skills -->
+                <section class="profile-section">
+                    <div class="section-header">
+                        <h2>Skills</h2>
+                        <p class="section-subtitle">List your technical and professional skills</p>
+                    </div>
+                    <div class="card">
+                        <div class="skills-input-group">
+                            <input type="text" id="skill_input" class="form-input" placeholder="Add a skill...">
+                            <button id="add_skill" class="btn btn-primary btn-sm">Add</button>
+                        </div>
+                        <div id="skills-list" class="skills-list"></div>
+                    </div>
+                </section>
+
+                <!-- Experience -->
+                <section class="profile-section span-2">
+                    <div class="section-header">
+                        <h2>Work Experience</h2>
+                        <p class="section-subtitle">Add your relevant work experience</p>
+                    </div>
+                    <div id="experience-container">
+                        <!-- Dynamic experience entries will be added here -->
+                    </div>
+                    <button id="add-experience" class="btn btn-outline">
+                        <span class="icon">+</span> Add Experience
+                    </button>
+                </section>
+
+                <!-- Education -->
+                <section class="profile-section span-2">
+                    <div class="section-header">
+                        <h2>Education</h2>
+                        <p class="section-subtitle">Add your educational background</p>
+                    </div>
+                    <div id="education-container">
+                        <!-- Dynamic education entries will be added here -->
+                    </div>
+                    <button id="add-education" class="btn btn-outline">
+                        <span class="icon">+</span> Add Education
+                    </button>
+                </section>
+
+                <!-- Projects -->
+                <section class="profile-section span-2">
+                    <div class="section-header">
+                        <h2>Projects</h2>
+                        <p class="section-subtitle">Showcase your notable projects</p>
+                    </div>
+                    <div id="projects-container">
+                        <!-- Dynamic project entries will be added here -->
+                    </div>
+                    <button id="add-project" class="btn btn-outline">
+                        <span class="icon">+</span> Add Project
+                    </button>
+                </section>
             </div>
-            <div class="form-group">
-                <label>Location</label>
-                <input type="text" name="exp_location">
+
+            <div class="save-section">
+                <button id="save-all" class="btn btn-primary btn-lg">Save All Changes</button>
+                <p class="save-status"></p>
             </div>
-            <div class="form-group">
-                <label>Start Date</label>
-                <input type="text" name="exp_start_date" placeholder="e.g., Jan 2020">
-            </div>
-            <div class="form-group">
-                <label>End Date</label>
-                <input type="text" name="exp_end_date" placeholder="e.g., Present or Dec 2022">
-            </div>
-            <div class="form-group">
-                <label>Description (Responsibilities/Achievements)</label>
-                <textarea name="exp_description" rows="4"></textarea>
-            </div>
-            <button type="button" class="btn btn-danger btn-sm remove-entry">Remove</button>
-            <hr>
         </div>
-    </template>
+    </main>
 
-    <template id="education-template">
-        <div class="education-entry dynamic-entry">
-            <div class="form-group">
-                <label>Degree Name</label>
-                <input type="text" name="edu_degree_name" required>
-            </div>
-            <div class="form-group">
-                <label>Major/Field of Study</label>
-                <input type="text" name="edu_major">
-            </div>
-            <div class="form-group">
-                <label>Institution Name</label>
-                <input type="text" name="edu_institution_name">
-            </div>
-            <div class="form-group">
-                <label>Location</label>
-                <input type="text" name="edu_location">
-            </div>
-            <div class="form-group">
-                <label>Graduation Date</label>
-                <input type="text" name="edu_graduation_date" placeholder="e.g., May 2018 or Expected Dec 2024">
-            </div>
-            <button type="button" class="btn btn-danger btn-sm remove-entry">Remove</button>
-            <hr>
-        </div>
-    </template>
+    <style>
+        .app-header {
+            background: white;
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
 
-     <template id="skill-template">
-        <li class="skill-item">
-            <span class="skill-name"></span>
-            <button type="button" class="btn btn-danger btn-sm remove-skill">&times;</button>
-        </li>
-    </template>
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-4) 0;
+        }
 
-    <template id="project-template">
-        <div class="project-entry dynamic-entry">
-            <div class="form-group">
-                <label>Project Name</label>
-                <input type="text" name="proj_project_name" required>
-            </div>
-            <div class="form-group">
-                <label>Description</label>
-                <textarea name="proj_description" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Link (Optional)</label>
-                <input type="url" name="proj_link">
-            </div>
-            <button type="button" class="btn btn-danger btn-sm remove-entry">Remove</button>
-            <hr>
-        </div>
-    </template>
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-6);
+        }
 
-    <script src="{{ url_for('static', filename='profile.js') }}"></script> <!-- Use app static -->
+        .nav-link {
+            color: var(--neutral-700);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--spacing-2) 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-600);
+        }
+
+        .nav-link.active {
+            color: var(--primary-600);
+            border-bottom-color: var(--primary-600);
+        }
+
+        .app-main {
+            padding-top: 80px;
+            padding-bottom: var(--spacing-12);
+            background: var(--neutral-50);
+            min-height: 100vh;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: var(--spacing-8);
+        }
+
+        .page-header h1 {
+            color: var(--neutral-900);
+            font-size: 2.25rem;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .page-subtitle {
+            color: var(--neutral-700);
+            font-size: 1.125rem;
+        }
+
+        .profile-completion {
+            max-width: 600px;
+            margin: 0 auto var(--spacing-8);
+        }
+
+        .completion-bar {
+            height: 8px;
+            background: var(--neutral-200);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .completion-progress {
+            height: 100%;
+            background: var(--primary-500);
+            transition: width 0.3s ease;
+        }
+
+        .completion-text {
+            text-align: center;
+            color: var(--neutral-700);
+            font-size: 0.875rem;
+            margin-top: var(--spacing-2);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-8);
+        }
+
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-4);
+        }
+
+        .profile-section.span-2 {
+            grid-column: span 2;
+        }
+
+        .section-header h2 {
+            color: var(--neutral-900);
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .section-subtitle {
+            color: var(--neutral-700);
+            font-size: 0.875rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: var(--spacing-6);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-4);
+        }
+
+        .span-2 {
+            grid-column: span 2;
+        }
+
+        .skills-input-group {
+            display: flex;
+            gap: var(--spacing-2);
+            margin-bottom: var(--spacing-4);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-2);
+        }
+
+        .skill-tag {
+            background: var(--primary-100);
+            color: var(--primary-700);
+            padding: var(--spacing-1) var(--spacing-3);
+            border-radius: 16px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .skill-remove {
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .skill-remove:hover {
+            opacity: 1;
+        }
+
+        .save-section {
+            text-align: center;
+        }
+
+        .save-status {
+            margin-top: var(--spacing-2);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section.span-2 {
+                grid-column: span 1;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+
+    <script src="{{ url_for('static', filename='profile.js') }}"></script>
 </body>
 </html>

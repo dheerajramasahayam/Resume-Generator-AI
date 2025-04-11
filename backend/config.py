@@ -18,6 +18,7 @@ class Config:
         'sqlite:///' + os.path.join(instance_path, 'resume_app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+    OPENWEATHER_API_KEY = os.environ.get('OPENWEATHER_API_KEY')
     # Point MIGRATION_DIR to the 'db' directory in the project root
     MIGRATION_DIR = os.path.join(os.path.dirname(basedir), 'db')
 

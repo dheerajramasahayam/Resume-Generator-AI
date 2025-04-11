@@ -3,66 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate Cover Letter - Resume Generator</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Use app static -->
+    <title>Generate Cover Letter - ResumeGen AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container nav-container">
-            <span class="nav-brand">ResumeGen</span>
-            <ul class="nav-links">
-                <li><a href="/profile">My Profile</a></li>
-                <li><a href="/generate_page">Generate Resume</a></li>
-                <li><a href="/cover_letter" class="active">Generate Cover Letter</a></li>
-                <li><a href="/auth/logout">Logout</a></li>
-            </ul>
+    <header class="app-header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/" class="nav-logo">ResumeGen AI</a>
+                <div class="nav-links">
+                    <a href="/profile" class="nav-link">Profile</a>
+                    <a href="/generate" class="nav-link">Generate Resume</a>
+                    <a href="/cover_letter" class="nav-link active">Cover Letter</a>
+                    <a href="/auth/logout" class="btn btn-outline btn-sm">Logout</a>
+                </div>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <div class="container cover-letter-container">
-        <h1>Generate Cover Letter</h1>
-        <p>Provide details about the job and company to generate a tailored cover letter using your profile.</p>
-
-        <form id="cover-letter-form">
-            <div class="form-group">
-                <label for="company_name">Company Name</label>
-                <input type="text" id="company_name" name="company_name" required>
-            </div>
-            <div class="form-group">
-                <label for="hiring_manager">Hiring Manager Name (Optional)</label>
-                <input type="text" id="hiring_manager" name="hiring_manager" placeholder="e.g., Ms. Jane Doe">
-            </div>
-             <div class="form-group">
-                <label for="job_description_cl">Job Description</label>
-                <textarea id="job_description_cl" name="job_description_cl" rows="8" required placeholder="Paste the job description here..."></textarea>
-            </div>
-             <div class="form-group">
-                <label for="additional_notes">Additional Notes (Optional)</label>
-                <textarea id="additional_notes" name="additional_notes" rows="3" placeholder="e.g., Mention specific connection, emphasize a key skill..."></textarea>
+    <main class="app-main">
+        <div class="container">
+            <div class="page-header">
+                <h1>Generate Cover Letter</h1>
+                <p class="page-subtitle">Create a personalized cover letter for your application</p>
             </div>
 
-            <div class="form-actions">
-                <button type="submit" id="generate-cl-btn" class="btn">Generate Cover Letter</button>
-                <div id="generate-cl-status" class="status-message"></div>
-                 <!-- Removed loading indicator div -->
+            <div class="generate-grid">
+                <!-- Cover Letter Input Form -->
+                <section class="generate-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Job Details</h2>
+                            <p class="card-subtitle">Enter information about the position</p>
+                        </div>
+                        <div class="card-body">
+                            <div id="profile-check-message" class="alert alert-warning" style="display: none;">
+                                Please <a href="/profile" class="alert-link">complete your profile</a> before generating a cover letter.
+                            </div>
+                            
+                            <form id="cover-letter-form">
+                                <div class="form-group">
+                                    <label for="company_name">Company Name</label>
+                                    <input type="text" id="company_name" name="company_name" 
+                                           class="form-input" placeholder="Enter company name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="job_title">Position Title</label>
+                                    <input type="text" id="job_title" name="job_title" 
+                                           class="form-input" placeholder="Enter job title" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="hiring_manager">Hiring Manager (Optional)</label>
+                                    <input type="text" id="hiring_manager" name="hiring_manager" 
+                                           class="form-input" placeholder="e.g., Mr. John Smith">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="job_description">Job Description</label>
+                                    <textarea id="job_description" name="job_description" 
+                                              class="form-input textarea-lg" 
+                                              placeholder="Paste the full job description here..."
+                                              required></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="additional_notes">Additional Notes (Optional)</label>
+                                    <textarea id="additional_notes" name="additional_notes" 
+                                              class="form-input"
+                                              placeholder="Any specific points you'd like to emphasize..."
+                                              rows="3"></textarea>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" id="generate-btn" class="btn btn-primary btn-lg">
+                                        Generate Cover Letter
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Generated Cover Letter -->
+                <section class="generate-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>Generated Cover Letter</h2>
+                            <p class="card-subtitle">Your personalized cover letter will appear here</p>
+                        </div>
+                        <div class="card-body">
+                            <div id="loading-indicator" class="loading-state" style="display: none;">
+                                <div class="loading-spinner"></div>
+                                <p>Generating your cover letter...</p>
+                            </div>
+                            <div id="cover-letter-output" class="cover-letter-content">
+                                <p class="placeholder-text">Your generated cover letter will appear here...</p>
+                            </div>
+                            <div class="export-actions" style="display: none;">
+                                <button id="copy-letter" class="btn btn-outline">
+                                    <span class="icon">📋</span> Copy to Clipboard
+                                </button>
+                                <div class="export-dropdown">
+                                    <button class="btn btn-primary">
+                                        Export as... <span class="icon">▼</span>
+                                    </button>
+                                    <div class="export-menu">
+                                        <button class="export-option" data-format="docx">Word Document (.docx)</button>
+                                        <button class="export-option" data-format="pdf">PDF Document (.pdf)</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </form>
-
-        <hr style="margin: 30px 0;">
-
-        <h2>Generated Cover Letter</h2>
-        <div id="cover-letter-output" class="resume-content" style="min-height: 300px;">
-            <!-- Cover letter text will be loaded here -->
-            Awaiting generation...
         </div>
-         <div class="form-actions">
-              <button id="copy-cl-btn" class="btn btn-secondary" disabled>Copy Text</button>
-              <!-- Add export buttons later if desired -->
-         </div>
-         <div id="copy-cl-status" class="status-message"></div>
+    </main>
 
-    </div>
+    <style>
+        .generate-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-6);
+            margin-bottom: var(--spacing-8);
+        }
 
-    <script src="{{ url_for('static', filename='cover_letter.js') }}"></script> <!-- Use app static -->
+        .generate-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            padding: var(--spacing-6);
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .card-header h2 {
+            color: var(--neutral-900);
+            font-size: 1.25rem;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .card-subtitle {
+            color: var(--neutral-700);
+            font-size: 0.875rem;
+        }
+
+        .card-body {
+            padding: var(--spacing-6);
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: var(--spacing-4);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-2);
+            color: var(--neutral-900);
+            font-weight: 500;
+        }
+
+        .textarea-lg {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .cover-letter-content {
+            min-height: 500px;
+            padding: var(--spacing-4);
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-4);
+            padding: var(--spacing-8) 0;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--primary-100);
+            border-top-color: var(--primary-500);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .placeholder-text {
+            color: var(--neutral-700);
+            font-style: italic;
+            text-align: center;
+            margin-top: var(--spacing-8);
+        }
+
+        .export-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-4);
+        }
+
+        .export-dropdown {
+            position: relative;
+        }
+
+        .export-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: var(--spacing-2);
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+            min-width: 200px;
+            z-index: 10;
+            display: none;
+        }
+
+        .export-option {
+            display: block;
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            text-align: left;
+            border: none;
+            background: none;
+            color: var(--neutral-900);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .export-option:hover {
+            background: var(--neutral-100);
+        }
+
+        .alert-link {
+            color: inherit;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .generate-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+
+    <script src="{{ url_for('static', filename='cover_letter.js') }}"></script>
 </body>
 </html>

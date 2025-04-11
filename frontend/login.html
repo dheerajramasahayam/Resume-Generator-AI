@@ -3,33 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Resume Generator</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Use app static -->
+    <title>Login - ResumeGen AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container auth-container">
-        <h1>Login</h1>
-        <!-- Flash messages will be handled by JS later if needed, or rely on redirects -->
-        <form id="login-form" method="POST" action="/auth/login">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="form-group remember-me">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Remember Me</label>
-            </div>
-            <button type="submit" class="btn">Login</button>
-        </form>
-        <p>Don't have an account? <a href="/auth/register">Register here</a></p>
-        <div id="error-message" class="error"></div>
-    </div>
+    <header class="auth-header">
+        <div class="container">
+            <a href="/" class="nav-logo">ResumeGen AI</a>
+        </div>
+    </header>
 
-    <!-- We might add auth.js later if we handle login via fetch instead of form post -->
-    <!-- <script src="{{ url_for('static', filename='auth.js') }}"></script> --> <!-- Use app static -->
+    <main class="auth-main">
+        <div class="auth-card">
+            <div class="auth-content">
+                <h1>Welcome Back</h1>
+                <p class="auth-subtitle">Sign in to continue building your perfect resume</p>
+
+                <div id="flash-messages">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <form id="login-form" method="POST" action="/auth/login" class="auth-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required
+                               class="form-input" placeholder="Enter your username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required
+                               class="form-input" placeholder="Enter your password">
+                    </div>
+
+                    <div class="form-group-inline">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember" name="remember">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="link-text">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </form>
+
+                <p class="auth-footer">
+                    Don't have an account? 
+                    <a href="/auth/register" class="link-primary">Create one now</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .auth-header {
+            padding: var(--spacing-4) 0;
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-logo {
+            color: var(--primary-600);
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-decoration: none;
+        }
+
+        .auth-main {
+            min-height: calc(100vh - 80px);
+            padding: var(--spacing-8) var(--spacing-4);
+            background: var(--neutral-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .auth-content {
+            padding: var(--spacing-8);
+        }
+
+        .auth-content h1 {
+            color: var(--neutral-900);
+            font-size: 1.875rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: var(--spacing-2);
+        }
+
+        .auth-subtitle {
+            color: var(--neutral-700);
+            text-align: center;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .auth-form {
+            margin-top: var(--spacing-6);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            border: 1px solid var(--neutral-200);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-500);
+            box-shadow: 0 0 0 3px var(--primary-100);
+            outline: none;
+        }
+
+        .form-group-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-6);
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+            color: var(--neutral-700);
+            cursor: pointer;
+        }
+
+        .link-text {
+            color: var(--primary-600);
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+
+        .link-text:hover {
+            text-decoration: underline;
+        }
+
+        .btn-block {
+            width: 100%;
+            padding: var(--spacing-3) var(--spacing-4);
+            font-size: 1rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: var(--spacing-6);
+            color: var(--neutral-700);
+        }
+
+        .link-primary {
+            color: var(--primary-600);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .link-primary:hover {
+            text-decoration: underline;
+        }
+
+        .alert {
+            margin-bottom: var(--spacing-4);
+            padding: var(--spacing-3) var(--spacing-4);
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .auth-card {
+                box-shadow: none;
+            }
+            
+            .auth-content {
+                padding: var(--spacing-4);
+            }
+        }
+    </style>
 </body>
 </html>
